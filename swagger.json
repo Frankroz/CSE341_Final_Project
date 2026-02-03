@@ -1,0 +1,206 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "MealPlanner API",
+    "description": "API to manage personal recipes, ingredients, meal plans, and reviews with OAuth authentication.",
+    "version": "1.0.0"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "schemes": ["http", "https"],
+  "paths": {
+    "/login": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Initiate GitHub OAuth login flow",
+        "responses": { "200": { "description": "Redirects to GitHub" } }
+      }
+    },
+    "/logout": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Log out the current user",
+        "responses": { "200": { "description": "Logged out successfully" } }
+      }
+    },
+    "/recipes": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Get all recipes",
+        "responses": { "200": { "description": "List of all recipes" } }
+      },
+      "post": {
+        "tags": ["Recipes"],
+        "summary": "Create a new recipe (Requires Auth)",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": { "$ref": "#/definitions/Recipe" }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Recipe created" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/recipes/{id}": {
+      "get": {
+        "tags": ["Recipes"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" }
+        ],
+        "responses": { "200": { "description": "Success" } }
+      },
+      "put": {
+        "tags": ["Recipes"],
+        "summary": "Update recipe (Requires Auth & Ownership)",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": { "$ref": "#/definitions/Recipe" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Updated" },
+          "403": { "description": "Forbidden" }
+        }
+      },
+      "delete": {
+        "tags": ["Recipes"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" }
+        ],
+        "responses": { "204": { "description": "Deleted" } }
+      }
+    },
+    "/mealplans": {
+      "get": {
+        "tags": ["MealPlans"],
+        "summary": "Get authenticated user's meal plans",
+        "responses": { "200": { "description": "Success" } }
+      },
+      "post": {
+        "tags": ["MealPlans"],
+        "summary": "Create new meal plan (Requires Auth & Validation)",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": { "$ref": "#/definitions/MealPlan" }
+          }
+        ],
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/mealplans/{id}": {
+      "put": {
+        "tags": ["MealPlans"],
+        "summary": "Update meal plan (Requires Auth, Validation & Ownership Check)",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": { "$ref": "#/definitions/MealPlan" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Updated" },
+          "403": { "description": "Forbidden" }
+        }
+      },
+      "delete": {
+        "tags": ["MealPlans"],
+        "summary": "Delete meal plan (Requires Auth & Ownership Check)",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" }
+        ],
+        "responses": { "204": { "description": "Deleted" } }
+      }
+    },
+    "/ingredients": {
+      "get": {
+        "tags": ["Ingredients"],
+        "summary": "Get list of all ingredients",
+        "responses": { "200": { "description": "Success" } }
+      },
+      "post": {
+        "tags": ["Ingredients"],
+        "summary": "Create new ingredient (Requires Auth & Validation)",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": { "$ref": "#/definitions/Ingredient" }
+          }
+        ],
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/ingredients/{id}": {
+      "delete": {
+        "tags": ["Ingredients"],
+        "summary": "Delete ingredient (Requires Auth)",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" }
+        ],
+        "responses": { "204": { "description": "Deleted" } }
+      }
+    }
+  },
+  "definitions": {
+    "Recipe": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "example": "Spaghetti Carbonara" },
+        "instructions": {
+          "type": "string",
+          "example": "Boil pasta, fry guanciale..."
+        },
+        "ingredients": {
+          "type": "array",
+          "items": { "type": "string" },
+          "example": ["Pasta", "Eggs", "Cheese"]
+        },
+        "prepTime": { "type": "string", "example": "20 mins" },
+        "servings": { "type": "integer", "example": 2 },
+        "cuisine": { "type": "string", "example": "Italian" },
+        "difficulty": { "type": "string", "example": "Medium" }
+      }
+    },
+    "MealPlan": {
+      "type": "object",
+      "properties": {
+        "weekNumber": { "type": "integer", "example": 5 },
+        "startDate": {
+          "type": "string",
+          "format": "date",
+          "example": "2026-02-12"
+        },
+        "schedule": {
+          "type": "array",
+          "items": { "type": "object" },
+          "example": [{ "day": "Monday", "recipeId": "123" }]
+        },
+        "totalCalories": { "type": "integer", "example": 2000 },
+        "goals": { "type": "string", "example": "High protein" },
+        "isPublic": { "type": "boolean", "example": false },
+        "notes": { "type": "string", "example": "Meal prep on Sunday" }
+      }
+    },
+    "Ingredient": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Tomato"
+        }
+      }
+    }
+  }
+}

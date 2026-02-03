@@ -1,0 +1,31 @@
+GET https://cse431-contacts-gv75.onrender.com/ HTTP/1.1
+
+###
+
+POST https://cse431-contacts-gv75.onrender.com/ HTTP/1.1
+content-type: application/json
+
+{
+    "firstName": "Peter",
+    "lastName": "Parker",
+    "email": "spidey@dailybugle.com",
+    "favoriteColor": "Red",
+    "birthday": "2001-08-10"
+}
+
+###
+
+PUT https://cse431-contacts-gv75.onrender.com/696a29fb995a1b539e649504 HTTP/1.1
+content-type: application/json
+
+{
+    "firstName": "M",
+    "lastName": "Morales",
+    "email": "miles@spiderverse.com",
+    "favoriteColor": "Black",
+    "birthday": "2005-08-03"
+}
+
+###
+
+DELETE https://cse431-contacts-gv75.onrender.com/696a29fb995a1b539e649504 HTTP/1.1
