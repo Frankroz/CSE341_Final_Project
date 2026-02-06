@@ -5,9 +5,9 @@
     "description": "API to manage personal recipes, ingredients, meal plans, and reviews with OAuth authentication.",
     "version": "1.0.0"
   },
-  "host": "localhost:8080",
+  "host": "cse341-final-project-rhpv.onrender.com",
   "basePath": "/",
-  "schemes": ["http", "https"],
+  "schemes": ["https"],
   "paths": {
     "/login": {
       "get": {
