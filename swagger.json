@@ -150,6 +150,55 @@
         ],
         "responses": { "204": { "description": "Deleted" } }
       }
+    },
+    "/grocerylists": {
+      "get": {
+        "tags": ["GroceryLists"],
+        "summary": "Get all grocery lists for current user (Requires Auth)",
+        "responses": { "200": { "description": "Success" } }
+      },
+      "post": {
+        "tags": ["GroceryLists"],
+        "summary": "Create new grocery list (Requires Auth)",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": { "$ref": "#/definitions/GroceryList" }
+          }
+        ],
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/grocerylists/{id}": {
+      "get": {
+        "tags": ["GroceryLists"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" }
+        ],
+        "responses": { "200": { "description": "Success" } }
+      },
+      "put": {
+        "tags": ["GroceryLists"],
+        "summary": "Update grocery list (Requires Auth & Ownership)",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": { "$ref": "#/definitions/GroceryList" }
+          }
+        ],
+        "responses": { "204": { "description": "Updated" } }
+      },
+      "delete": {
+        "tags": ["GroceryLists"],
+        "summary": "Delete grocery list (Requires Auth & Ownership)",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" }
+        ],
+        "responses": { "204": { "description": "Deleted" } }
+      }
     }
   },
   "definitions": {
@@ -200,6 +249,28 @@
           "type": "string",
           "example": "Tomato"
         }
+      }
+    },
+    "GroceryList": {
+      "type": "object",
+      "required": ["listName", "weekNumber", "items"],
+      "properties": {
+        "listName": { "type": "string", "example": "Weekly Staples" },
+        "weekNumber": { "type": "integer", "example": 6 },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string", "example": "Chicken Breast" },
+              "quantity": { "type": "number", "example": 2 },
+              "unit": { "type": "string", "example": "lbs" },
+              "isPurchased": { "type": "boolean", "example": false }
+            }
+          }
+        },
+        "totalEstimatedCost": { "type": "number", "example": 25.5 },
+        "storeName": { "type": "string", "example": "Local Mart" }
       }
     }
   }

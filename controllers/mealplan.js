@@ -26,7 +26,6 @@ exports.createMealPlan = async (req, res) => {
 exports.updateMealPlan = async (req, res) => {
   try {
     if (!validateObjectId(req.params.id, res)) return;
-    console.log("asdf");
     const db = mongodb.getDb().db().collection("MealPlans");
     const plan = await db.findOne({ _id: new ObjectId(req.params.id) });
     if (plan.userId !== req.user._id)
