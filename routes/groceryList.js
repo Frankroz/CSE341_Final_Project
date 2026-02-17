@@ -5,11 +5,11 @@ const { groceryListValidation } = require("../middleware/validate");
 
 router.get("/", isAuthenticated, controller.getAll);
 router.get("/:id", isAuthenticated, controller.getSingle);
-router.post("/", isAuthenticated, groceryListValidation, controller.createList);
+router.post("/", isAuthenticated, groceryListValidation(), controller.createList);
 router.put(
   "/:id",
   isAuthenticated,
-  groceryListValidation,
+  groceryListValidation(),
   controller.updateList,
 );
 router.delete("/:id", isAuthenticated, controller.deleteList);
