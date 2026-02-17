@@ -30,7 +30,7 @@ router.get(
 router.use("/ingredients", require("./ingredient"));
 router.use("/recipes", require("./recipe"));
 router.use("/mealplans", require("./mealplan"));
-router.use("/groceryList", require("./groceryList"));
+router.use("/grocerylists", require("./groceryList"));
 
 // Route for Swagger Documentation
 router.use("/api-docs", swaggerUi.serve);
