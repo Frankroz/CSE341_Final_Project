@@ -18,7 +18,7 @@ exports.getMealPlanById = async (req, res) => {
     const db = mongodb.getDb().db().collection("MealPlans");
     const plan = await db.findOne({
       _id: new ObjectId(req.params.id),
-      userId: new ObjectId(req.user._id),
+      userId: req.user._id,
     });
     if (!plan) return res.status(404).json({ message: "Plan not found" });
     res.json(plan);
